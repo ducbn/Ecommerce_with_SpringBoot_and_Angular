@@ -41,14 +41,45 @@
   padding: 20px;
 }
 
-.product-action {
+.product-actions {
   display: flex;
   justify-content: flex-start;
   margin-top: 20px;
 }
 
-.product-action button {
+.product-actions button {
   margin-right: 10px;
 }
 
-.bor
+.border-wrapper{
+  border: 1px solid white;
+}
+
+.product-quantity {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.product-quantity button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.product-quantity input {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  width: 40px;
+  text-align: center;
+  margin: 0 10px;
+}
+
+.product-quantity input:focus {
+  outline: none;
+}
