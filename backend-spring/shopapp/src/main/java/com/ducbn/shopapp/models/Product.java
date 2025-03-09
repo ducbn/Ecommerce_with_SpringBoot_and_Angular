@@ -3,8 +3,6 @@ package com.ducbn.shopapp.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-
-
 @Entity
 @Table(name = "products")
 @NoArgsConstructor
