@@ -2,7 +2,7 @@ package com.ducbn.shopapp.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.management.relation.Role;
+import com.ducbn.shopapp.models.Role;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
 

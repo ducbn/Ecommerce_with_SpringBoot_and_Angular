@@ -1,6 +1,6 @@
 package com.ducbn.shopapp.repositories;
 
-import org.apache.catalina.User;
+import com.ducbn.shopapp.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
