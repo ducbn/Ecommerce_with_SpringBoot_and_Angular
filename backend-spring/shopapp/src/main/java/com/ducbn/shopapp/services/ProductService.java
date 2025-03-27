@@ -10,6 +10,7 @@ import com.ducbn.shopapp.models.ProductImage;
 import com.ducbn.shopapp.repositories.CategoryRepository;
 import com.ducbn.shopapp.repositories.ProductImageRepository;
 import com.ducbn.shopapp.repositories.ProductRepository;
+import com.ducbn.shopapp.responses.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +34,7 @@ public class ProductService implements IProductService {
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
                 .thumbnail(productDTO.getThumbnail())
+                .description(productDTO.getDescription())
                 .category(existingCategory)
                 .build();
         return productRepository.save(newProduct);
@@ -45,9 +47,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Page<Product> getAllProducts(PageRequest pageRequest) {
+    public Page<ProductResponse> getAllProducts(PageRequest pageRequest) {
         // lấy danh sách sản phẩm theo trang(page) và giới hạn (limit)
-        return productRepository.findAll(pageRequest);
+        return productRepository
+                .findAll(pageRequest)
+                .map(ProductResponse::fromProduct);
     }
 
 

@@ -5,6 +5,8 @@ import com.ducbn.shopapp.dtos.ProductImageDTO;
 import com.ducbn.shopapp.exceptions.DataNotFoundException;
 import com.ducbn.shopapp.models.Product;
 import com.ducbn.shopapp.models.ProductImage;
+import com.ducbn.shopapp.responses.ProductListResponse;
+import com.ducbn.shopapp.responses.ProductResponse;
 import com.ducbn.shopapp.services.IProductService;
 import com.ducbn.shopapp.services.ProductService;
 import com.github.javafaker.Faker;
@@ -100,30 +102,54 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<ProductListResponse> getProducts(
             @RequestParam("page")  int page,
             @RequestParam("limit")  int limit
     ) {
-        //Tạo Pageable từ thông tin trang và gioi hạn
+        //Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
                 page, limit,
                 Sort.by("createdAt").descending());
-        Page<Product> productPage = productService.getAllProducts(pageRequest);
+        Page<ProductResponse> productPage = productService.getAllProducts(pageRequest);
         //lấy tổng số trang
         int totalPages = productPage.getTotalPages();
-        List<Product> products = productPage.getContent();
-        return ResponseEntity.ok(products);
+        List<ProductResponse> products = productPage.getContent();
+        return ResponseEntity.ok(ProductListResponse.builder()
+                        .products(products)
+                        .totalPages(totalPages)
+                        .build());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getProductById(@PathVariable("id") String productId) {
-        return ResponseEntity.ok("Product with id " + productId);
+    public ResponseEntity<?> getProductById(@PathVariable("id") Long productId) {
+        try {
+            Product existingProduct = productService.getProductById(productId);
+            return ResponseEntity.ok(ProductResponse.fromProduct(existingProduct));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable long id, @RequestBody ProductDTO productDTO) {
+        try {
+            Product updateProduct = productService.updateProduct(id, productDTO);
+            return ResponseEntity.ok(updateProduct);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id){
-        return ResponseEntity.ok(String.format("Product with id = %d deleted successfully ", id));
+        try {
+            productService.deleteProduct(id);
+            return ResponseEntity.ok(String.format("Product %s deleted", id));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
+
 
     private String storeFile(MultipartFile file) throws IOException {
         if (!isImageFile(file) || file.getOriginalFilename() == null){
@@ -162,6 +188,7 @@ public class ProductController {
                     .name(productName)
                     .price((float)faker.number().numberBetween(10,90_000_000))
                     .description(faker.lorem().sentence())
+                    .thumbnail("")
                     .category_id((long)faker.number().numberBetween(1, 4))
                     .build();
             try {
