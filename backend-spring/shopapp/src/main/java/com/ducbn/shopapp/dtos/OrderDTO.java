@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @Builder

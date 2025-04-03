@@ -35,7 +35,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/{user_id}")
+    @GetMapping("/user/{user_id}")
     public ResponseEntity<?> getOrdersByUser (@Valid @PathVariable("user_id") Long user_id) {
         try{
             List<Order> orders = orderService.findByUserId(user_id);
@@ -57,13 +57,19 @@ public class OrderController {
 
     @PutMapping("/{id}")
     //công việc của admin
-    public ResponseEntity<?> updateOrder (@Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
-        return ResponseEntity.ok("update order successfully");
+    public ResponseEntity<?> updateOrder (@Valid @RequestBody OrderDTO orderDTO,@Valid @PathVariable Long id) {
+        try {
+            Order order = orderService.updateOrder(id, orderDTO);
+            return ResponseEntity.ok(order);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOrder (@PathVariable Long id) {
-        //xoá mềm => cập nhập active = f
+        //xoá mềm => cập nhập active = false
+        orderService.deleteOrder(id);
         return ResponseEntity.ok("delete order successfully");
     }
 }
