@@ -74,7 +74,7 @@ public class UserService implements IUserService{
             }
         }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                phoneNumber, password
+                phoneNumber, password, existingUser.getAuthorities()
         );
         //authen with Java spring security
         authenticationManager.authenticate(authenticationToken);
