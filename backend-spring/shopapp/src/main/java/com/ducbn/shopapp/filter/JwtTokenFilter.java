@@ -1,6 +1,7 @@
 package com.ducbn.shopapp.filter;
 
 import com.ducbn.shopapp.components.JwtTokenUtil;
+import com.ducbn.shopapp.models.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -49,7 +49,7 @@ public class JwtTokenFilter extends OncePerRequestFilter{
             final String token = authHeader.substring(7);
             final String phoneNumber = jwtTokenUtil.extractPhoneNumber(token);
             if (phoneNumber != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(phoneNumber);
+                User userDetails = (User) userDetailsService.loadUserByUsername(phoneNumber);
                 if(jwtTokenUtil.validateToken(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities()

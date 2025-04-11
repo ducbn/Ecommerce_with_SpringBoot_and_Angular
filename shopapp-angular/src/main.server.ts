@@ -8,6 +8,6 @@ import { LoginComponent } from './app/login/login.component';
 import { RegisterComponent } from './app/register/register.component';
 import { DetailProductComponent } from './app/detail-product/detail-product.component';
 
-const bootstrap = () => bootstrapApplication(DetailProductComponent, config);
+const bootstrap = () => bootstrapApplication(RegisterComponent, config);
 
 export default bootstrap;
