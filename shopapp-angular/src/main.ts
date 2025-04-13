@@ -8,6 +8,12 @@ import { LoginComponent } from './app/login/login.component';
 import { RegisterComponent } from './app/register/register.component';
 import { DetailProductComponent } from './app/detail-product/detail-product.component';
 import { FormsModule } from '@angular/forms'
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 
-bootstrapApplication(RegisterComponent, appConfig)
-  .catch((err) => console.error(err));
+bootstrapApplication(LoginComponent, {
+  providers: [
+    provideHttpClient(), // Cung cấp HttpClient
+    provideRouter([]), // Thêm router nếu cần, hiện tại để mảng rỗng
+  ],
+}).catch((err) => console.error(err));

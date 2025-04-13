@@ -7,17 +7,17 @@
 
           <!-- Số điện thoại -->
           <div class="form-group">
-            <label for="phone">Phone</label>
+            <label for="phoneNumber">Phone's number</label>
             <input
               type="text"
               class="form-control"
-              [(ngModel)]="phone"
+              [(ngModel)]="phoneNumber"
               required
               minlength="6"
-              name="phone"
+              name="phoneNumber"
               #phoneControl="ngModel"
-              id="phone"
-              (input)="onPhoneChange()"
+              id="phoneNumber"
+              (input)="onPhoneNumberChange()"
             />
             <div class="divider-nospace"></div>
             <p class="text-danger" *ngIf="phoneControl?.touched && phoneControl?.hasError('required')">
