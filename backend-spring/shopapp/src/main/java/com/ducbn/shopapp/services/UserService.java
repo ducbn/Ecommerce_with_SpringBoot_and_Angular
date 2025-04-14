@@ -1,6 +1,6 @@
 package com.ducbn.shopapp.services;
 
-import com.ducbn.shopapp.components.JwtTokenUtil;
+import com.ducbn.shopapp.components.JwtTokenUtils;
 import com.ducbn.shopapp.dtos.UserDTO;
 import com.ducbn.shopapp.exceptions.DataNotFoundException;
 import com.ducbn.shopapp.exceptions.PermissionDenyException;
@@ -13,7 +13,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class UserService implements IUserService{
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtils jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
 
     @Override

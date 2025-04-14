@@ -4,18 +4,17 @@ import com.ducbn.shopapp.dtos.CategoryDTO;
 import com.ducbn.shopapp.models.Category;
 import com.ducbn.shopapp.responses.UpdateCategoriResponse;
 import com.ducbn.shopapp.services.CatagoryService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.ducbn.shopapp.components.LocalizationUtils;
+import com.ducbn.shopapp.utils.MessageKey;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.LocaleResolver;
 
 import java.util.List;
-import java.util.Locale;
+
 
 @RestController
 @RequestMapping("${api.prefix}/categories")
@@ -25,8 +24,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CatagoryService catagoryService;
-    private final MessageSource messageSource;
-    private final LocaleResolver localeResolver;
+    private final LocalizationUtils localizationUtils;
 
     @PostMapping("")
     public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryDTO categoryDTO, BindingResult result) {
@@ -54,13 +52,11 @@ public class CategoryController {
     @PutMapping("/{id}")
     public ResponseEntity<UpdateCategoriResponse> updateCategory(
              @PathVariable Long id,
-             @Valid @RequestBody CategoryDTO categoryDTO,
-             HttpServletRequest request)
+             @Valid @RequestBody CategoryDTO categoryDTO)
     {
         catagoryService.updateCategory(id, categoryDTO);
-        Locale locale = localeResolver.resolveLocale(request);
         return ResponseEntity.ok(UpdateCategoriResponse.builder()
-                        .message(messageSource.getMessage("category.updateCategory.update_successfully", null, locale))
+                        .message(localizationUtils.getLocalizedMessage(MessageKey.UPDATE_CATEGORY_SUCCESSFULLY))
                 .build());
     }
 

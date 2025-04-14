@@ -1,5 +1,6 @@
 package com.ducbn.shopapp.controllers;
 
+import com.ducbn.shopapp.components.LocalizationUtils;
 import com.ducbn.shopapp.dtos.*;
 import com.ducbn.shopapp.exceptions.DataNotFoundException;
 import com.ducbn.shopapp.models.OrderDetail;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderDetailController {
     private final OrderDetailService orderDetailService;
+    private final LocalizationUtils localizationUtils;
 
     @PostMapping("")
     public ResponseEntity<?> createOrderDetail (

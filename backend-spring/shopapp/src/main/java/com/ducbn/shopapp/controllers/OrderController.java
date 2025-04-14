@@ -1,5 +1,6 @@
 package com.ducbn.shopapp.controllers;
 
+import com.ducbn.shopapp.components.LocalizationUtils;
 import com.ducbn.shopapp.dtos.OrderDTO;
 import com.ducbn.shopapp.models.Order;
 import com.ducbn.shopapp.services.IOrderService;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final IOrderService orderService;
+    private final LocalizationUtils localizationUtils;
 
     @PostMapping("")
     public ResponseEntity<?> createOrder (@Valid @RequestBody OrderDTO orderDTO, BindingResult result) {

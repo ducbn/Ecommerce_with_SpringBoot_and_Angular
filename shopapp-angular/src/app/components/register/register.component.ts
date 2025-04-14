@@ -3,8 +3,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../footer/footer.component';
 import { Router, RouterModule } from '@angular/router';
-import { UserService } from '../services/user.service';
-import { RegisterDTO } from '../dtos/user/register.dto';
+import { UserService } from '../../services/user.service';
+import { RegisterDTO } from '../../dtos/user/register.dto';
 
 @Component({
   selector: 'app-register',

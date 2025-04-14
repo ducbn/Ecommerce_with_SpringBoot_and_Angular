@@ -1,5 +1,6 @@
 package com.ducbn.shopapp.controllers;
 
+import com.ducbn.shopapp.components.LocalizationUtils;
 import com.ducbn.shopapp.dtos.ProductDTO;
 import com.ducbn.shopapp.dtos.ProductImageDTO;
 import com.ducbn.shopapp.exceptions.DataNotFoundException;
@@ -39,6 +40,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductController {
     private final IProductService productService;
+    private final LocalizationUtils localizationUtils;
 
     @PostMapping(value = "")
     public ResponseEntity<?> createProduct(
