@@ -9,8 +9,9 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './app/interceptors/token.interceptor';
+import { DetailProductComponent } from './app/components/detail-product/detail-product.component';
 
-bootstrapApplication(LoginComponent, {
+bootstrapApplication(DetailProductComponent, {
   providers: [
     provideHttpClient(), // Cung cấp HttpClient
     provideRouter([]), // Thêm router nếu cần, hiện tại để mảng rỗng

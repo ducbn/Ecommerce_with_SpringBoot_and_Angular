@@ -83,3 +83,16 @@
 .product-quantity input:focus {
   outline: none;
 }
+
+/* Ẩn mũi tên tăng/giảm của input type="number" cho Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Ẩn mũi tên trong Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}

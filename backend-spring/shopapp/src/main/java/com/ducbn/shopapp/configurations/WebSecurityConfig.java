@@ -46,9 +46,10 @@ public class WebSecurityConfig {
                             )
                             .permitAll()
                             .requestMatchers(GET,
-                                    String.format("%s/roles**", apiPrefix)).hasAnyRole(Role.USER, Role.ADMIN)
+                                    String.format("%s/roles/**", apiPrefix)).permitAll()
+                            //-------------------------------------
                             .requestMatchers(GET,
-                                    String.format("%s/categories**", apiPrefix)).hasAnyRole(Role.USER, Role.ADMIN)
+                                    String.format("%s/categories/**", apiPrefix)).permitAll()
                             .requestMatchers(POST,
                                     String.format("%s/categories/**", apiPrefix)).hasRole(Role.ADMIN)
                             .requestMatchers(PUT,
@@ -57,9 +58,13 @@ public class WebSecurityConfig {
                                     String.format("%s/categories/**", apiPrefix)).hasRole(Role.ADMIN)
                             //-----------------------------------------------
                             .requestMatchers(GET,
-                                    String.format("%s/products**", apiPrefix)).hasAnyRole(Role.USER, Role.ADMIN)
+                                    String.format("%s/products/**", apiPrefix)).permitAll()
+                            .requestMatchers(GET,
+                                    String.format("%s/products/images/*", apiPrefix)).permitAll()
                             .requestMatchers(POST,
                                     String.format("%s/products/**", apiPrefix)).hasRole(Role.ADMIN)
+                            .requestMatchers(POST,
+                                    String.format("%s/products/uploads/*", apiPrefix)).hasAnyRole(Role.USER, Role.ADMIN)
                             .requestMatchers(PUT,
                                     String.format("%s/products/**", apiPrefix)).hasRole(Role.ADMIN)
                             .requestMatchers(DELETE,
@@ -83,7 +88,7 @@ public class WebSecurityConfig {
                             .requestMatchers(DELETE,
                                     String.format("%s/order_details/**", apiPrefix)).hasRole(Role.ADMIN)
                             .anyRequest().authenticated();
-                }).csrf(AbstractHttpConfigurer::disable);
+                });
 
         http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
             @Override

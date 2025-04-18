@@ -15,7 +15,7 @@ public interface IProductService {
 
     Product getProductById(long id) throws Exception;
 
-    Page<ProductResponse> getAllProducts(PageRequest pageRequest);
+    Page<ProductResponse> getAllProducts(String keyword ,Long categoryId ,PageRequest pageRequest);
 
     Product updateProduct(long id, ProductDTO productDTO) throws Exception;
 
@@ -24,4 +24,6 @@ public interface IProductService {
     boolean existsByName(String name);
 
     ProductImage createProductImage(Long productId, ProductImageDTO productImageDTO) throws Exception;
+
+    //ProductImage getProductImage(long productImageId) throws Exception;
 }

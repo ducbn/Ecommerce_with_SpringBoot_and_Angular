@@ -8,6 +8,8 @@ import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { LoginResponse } from '../../responses/user/login.response';
 import { TokenService } from '../../services/token.service';
+import { Role } from '../../models/role';
+import { RoleService } from '../../services/role.service';
 
 @Component({
   selector: 'app-login',
@@ -17,25 +19,38 @@ import { TokenService } from '../../services/token.service';
 })
 export class LoginComponent {
   @ViewChild('loginForm') loginForm!: NgForm;
+
   phoneNumber: string = '0987654321';
   password: string = '12345678';
 
-  constructor(private router: Router, private userService: UserService, private tokenService: TokenService) {
-    this.phoneNumber;
-    this.password;
+  roles: Role[] = [];
+  rememberMe: boolean = true;
+  selectedRole: Role | undefined;
+
+  onPhoneNumberChange() {
+    console.log(`Phone typed: ${this.phoneNumber}`);
   }
+
+  constructor(
+    private router: Router, 
+    private userService: UserService, 
+    private tokenService: TokenService,
+    private roleService: RoleService,
+  ) {}
 
   ngOnInit() {
     debugger
     this.roleService.getRoles().subscribe({
-      next: (response) => {
-        console.log(response);
+      next: (roles: Role[]) => {
+        debugger
+        this.roles = roles;
+        this.selectedRole = roles.length > 0 ? roles[0] : undefined;
+      },
+      error: (error: any) => {
+        debugger
+        console.error('Error fetching roles:', error);
       }
     });
-  }
-
-  onPhoneNumberChange() {
-    console.log(`Phone typed: ${this.phoneNumber}`);
   }
 
   login() {

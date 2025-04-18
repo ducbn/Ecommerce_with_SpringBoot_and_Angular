@@ -3,6 +3,8 @@ package com.ducbn.shopapp.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "product_images")
 @NoArgsConstructor
@@ -22,5 +24,4 @@ public class ProductImage {
 
     @Column(name = "image_url", length = 300)
     private String imageUrl;
-
 }

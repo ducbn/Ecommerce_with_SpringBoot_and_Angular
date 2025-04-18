@@ -3,7 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RegisterDTO } from '../dtos/user/register.dto';
 import { LoginDTO } from '../dtos/user/login.dto';
-import { environment } from '../enviroments/enviroment';
+import { environment } from '../environments/environment';
+import { HttpUtilService } from './http.util.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,16 +12,15 @@ import { environment } from '../enviroments/enviroment';
 export class UserService {
   private apiRegister = `${environment.apiUrl}/users/register`;
   private apiLogin = `${environment.apiUrl}/users/login`;
-  private apiConfig = {
-    headers: this.createHeaders(),
-  }
+  private apiConfig: { headers: HttpHeaders };
 
-  constructor(private http: HttpClient) { }
-  private createHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept-Language': 'vi',
-    });
+  constructor(
+    private http: HttpClient, 
+    private httpUtilService: HttpUtilService
+  ) {
+    this.apiConfig = {
+      headers: this.httpUtilService.createHeaders(),
+    };
   }
 
   register(registerDTO: RegisterDTO): Observable<any> {
