@@ -16,4 +16,6 @@ public class UserLoginDTO {
 
     @NotBlank(message = "Password cannot be blank")
     private String password;
+
+    private Long roleId;
 }

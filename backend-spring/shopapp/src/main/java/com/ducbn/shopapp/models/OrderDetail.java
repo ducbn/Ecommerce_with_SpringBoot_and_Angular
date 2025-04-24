@@ -1,5 +1,7 @@
 package com.ducbn.shopapp.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +18,7 @@ public class OrderDetail {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "order_id")
     private Order order;
 

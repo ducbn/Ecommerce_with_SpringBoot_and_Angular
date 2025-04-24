@@ -8,6 +8,7 @@ import com.ducbn.shopapp.responses.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
 
 
 public interface IProductService {
@@ -16,6 +17,8 @@ public interface IProductService {
     Product getProductById(long id) throws Exception;
 
     Page<ProductResponse> getAllProducts(String keyword ,Long categoryId ,PageRequest pageRequest);
+
+    List<Product> findProductsByIds(List<Long> productIds);
 
     Product updateProduct(long id, ProductDTO productDTO) throws Exception;
 

@@ -1,4 +1,3 @@
-import { Category } from "./category";
 import { ProductImage } from "./product.image";
 
 export interface Product {

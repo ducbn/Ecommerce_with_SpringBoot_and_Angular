@@ -1,11 +1,12 @@
 package com.ducbn.shopapp.services;
 
+import com.ducbn.shopapp.dtos.CartItemDTO;
 import com.ducbn.shopapp.dtos.OrderDTO;
 import com.ducbn.shopapp.exceptions.DataNotFoundException;
-import com.ducbn.shopapp.models.Order;
-import com.ducbn.shopapp.models.OrderStatus;
-import com.ducbn.shopapp.models.User;
+import com.ducbn.shopapp.models.*;
+import com.ducbn.shopapp.repositories.OrderDetailRepository;
 import com.ducbn.shopapp.repositories.OrderRepository;
+import com.ducbn.shopapp.repositories.ProductRepository;
 import com.ducbn.shopapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,8 @@ public class OrderService implements IOrderService{
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final ProductRepository productRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
     @Override
     @Transactional
@@ -40,7 +44,7 @@ public class OrderService implements IOrderService{
         Order order = new Order();
         modelMapper.map(orderDTO, order);
         order.setUser(user);
-        order.setOrderDate(new Date());
+        order.setOrderDate(LocalDate.now());
         order.setStatus(OrderStatus.PENDING);
 
         //kiem tra shipping date >= ngay dat hang
@@ -50,7 +54,31 @@ public class OrderService implements IOrderService{
         }
         order.setShippingDate(shippingDate);
         order.setActive(true);
+        order.setTotalMoney(orderDTO.getTotalMoney());
         orderRepository.save(order);
+
+        //tạo 1 ds các obj OrderDetail từ CartItemDTO
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        for (CartItemDTO cartItemDTO: orderDTO.getCartItems()) {
+            //tạo 1 đối tượng orderDetail từ cartItemDTO
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrder(order);
+
+            //lấy thông tin sản phẩm từ cartItemDTO
+            Long productId = cartItemDTO.getProductId();
+            int quantity = cartItemDTO.getQuantity();
+
+            //tìm thông tin sản phẩm từ csdl(hoặc cache nếu cần)
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(()->new Exception("Product not found with id: "+productId));
+
+            orderDetail.setProduct(product);
+            orderDetail.setNumberOfProduct(quantity);
+            orderDetail.setPrice(product.getPrice());
+
+            orderDetails.add(orderDetail);
+        }
+        orderDetailRepository.saveAll(orderDetails);
         return order;
     }
 

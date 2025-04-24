@@ -69,7 +69,7 @@ public class UserService implements IUserService{
 
     @Override
     @Transactional
-    public String login(String phoneNumber, String password) throws Exception{
+    public String login(String phoneNumber, String password, Long roleId) throws Exception{
         // spring security
         Optional<User> optionalUser = userRepository.findByPhoneNumber(phoneNumber);
         if(optionalUser.isEmpty()){
@@ -83,9 +83,20 @@ public class UserService implements IUserService{
                 throw new BadCredentialsException("Wrong password or phone number");
             }
         }
+
+        Optional<Role> optionalRole = roleRepository.findById(roleId);
+        if (optionalRole.isEmpty() || !roleId.equals(existingUser.getRole().getId())) {
+            throw new DataNotFoundException("Role not found/role id wrong");
+        }
+//        if (!optionalUser.get().isActive()){
+//            throw new DataNotFoundException("User is not active");
+//        }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                phoneNumber, password, existingUser.getAuthorities()
+                phoneNumber,
+                password,
+                existingUser.getAuthorities()
         );
+
         //authen with Java spring security
         authenticationManager.authenticate(authenticationToken);
         return jwtTokenUtil.generateToken(existingUser);

@@ -66,10 +66,15 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-            @Valid @RequestBody UserLoginDTO userLoginDTO){
+            @Valid @RequestBody UserLoginDTO userLoginDTO)
+    {
         //kiểm tra thông tin đăng nhâo và sinh token
         try {
-            String token = userService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
+            String token = userService.login(
+                    userLoginDTO.getPhoneNumber(),
+                    userLoginDTO.getPassword(),
+                    userLoginDTO.getRoleId() == null ? 1 : userLoginDTO.getRoleId()
+            );
 
             return ResponseEntity.ok(LoginResponse.builder()
                     .token(token)

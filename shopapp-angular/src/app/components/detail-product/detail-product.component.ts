@@ -29,7 +29,8 @@ export class DetailProductComponent implements OnInit {
   ){}
 
   ngOnInit(){
-    const idParam = 14;
+    const idParam = 12;
+    this.cartService.getCart();
     if (idParam !== null) {
       this.productId = +idParam;
     }
@@ -83,14 +84,15 @@ export class DetailProductComponent implements OnInit {
     this.showImage(this.currentImageIndex - 1);
   }
 
-  addToCart():void{
-    debugger
-    if(this.product){
-      this.cartService.addToCart(this.product.id, this.quantity)
-    }else{
+  addToCart(): void {
+    debugger;
+    if (this.product) {
+      this.cartService.addToCart(this.productId, this.quantity);
+    } else {
       console.error('No product to add to cart');
     }
   }
+  
 
   increaseQuantity(): void {
     this.quantity++;

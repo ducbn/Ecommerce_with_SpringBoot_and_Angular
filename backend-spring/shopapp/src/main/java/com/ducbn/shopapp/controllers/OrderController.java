@@ -3,6 +3,7 @@ package com.ducbn.shopapp.controllers;
 import com.ducbn.shopapp.components.LocalizationUtils;
 import com.ducbn.shopapp.dtos.OrderDTO;
 import com.ducbn.shopapp.models.Order;
+import com.ducbn.shopapp.responses.OrderResponse;
 import com.ducbn.shopapp.services.IOrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,7 @@ public class OrderController {
     public ResponseEntity<?> getOrder (@Valid @PathVariable("id") Long orderId) {
         try{
             Order existingOrder = orderService.getOrder(orderId);
-            return ResponseEntity.ok(existingOrder);
+            return ResponseEntity.ok(OrderResponse.fromOrder(existingOrder));
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

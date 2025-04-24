@@ -19,6 +19,7 @@ export class CartService {
     }
 
     addToCart(productId: number, quantity: number = 1): void {
+        debugger
         if (this.cart.has(productId)) {
             this.cart.set(productId, this.cart.get(productId)! + quantity);
         } else {
@@ -32,6 +33,7 @@ export class CartService {
     }
 
     private saveCartToLocalStorage(): void {
+        debugger
         if (typeof window !== 'undefined') {
             localStorage.setItem('cart', JSON.stringify(Array.from(this.cart.entries())));
         }

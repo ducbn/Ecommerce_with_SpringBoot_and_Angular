@@ -1,11 +1,13 @@
 package com.ducbn.shopapp.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -23,7 +25,6 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-
     @Column(name = "fullname", length = 100)
     private String fullname;
 
@@ -40,13 +41,13 @@ public class Order {
     private String note;
 
     @Column(name = "order_date")
-    private Date orderDate;
+    private LocalDate orderDate;
 
     @Column(name = "status")
     private String status;
 
     @Column(name = "total_money")
-    private Integer totalMoney;
+    private Float totalMoney;
 
     @Column(name = "shipping_method")
     private String shippingMethod;
@@ -65,4 +66,8 @@ public class Order {
 
     @Column(name = "active")
     private Boolean active;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<OrderDetail> orderDetails;
 }

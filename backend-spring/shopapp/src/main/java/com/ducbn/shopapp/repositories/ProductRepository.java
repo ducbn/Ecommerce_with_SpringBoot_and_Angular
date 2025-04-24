@@ -6,6 +6,9 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsByName(String name);
 
@@ -17,9 +20,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "(:keyword IS NULL OR :keyword = '' OR " +
             "LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%')))")
-
     Page<Product> searchProducts(@Param("keyword") String keyword,
                                  @Param("categoryId") Long categoryId,
                                  Pageable pageable);
 
+    @Query("SELECT p from Product p LEFT join fetch p.productImages where p.id = :productId")
+    Optional<Product> getDetailProduct(@Param("productId") Long productId);
+
+    @Query("SELECT p from Product p WHERE p.id in :productIds")
+    List<Product> findProductsByIds(@Param("productIds") List<Long> productIds);
 }

@@ -10,11 +10,14 @@ import { provideRouter } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './app/interceptors/token.interceptor';
 import { DetailProductComponent } from './app/components/detail-product/detail-product.component';
+import { OrderDetailComponent } from './app/components/order-confirm/order.detail.component';
+import { OrderComponent } from './app/components/order/order.component';
+import { routes } from './app/app.routes';
 
-bootstrapApplication(DetailProductComponent, {
+bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(), // Cung cấp HttpClient
-    provideRouter([]), // Thêm router nếu cần, hiện tại để mảng rỗng
+    provideRouter(routes), // Thêm router nếu cần, hiện tại để mảng rỗng
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
